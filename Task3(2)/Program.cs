@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,7 +12,8 @@ namespace Task3_2_
     {
         static void Main(string[] args)
         {
-            string[] inputData = System.IO.File.ReadAllLines(@"D:\Algotester\Task3(2)\Task3(2)\data.txt");
+            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"data.txt");
+            string[] inputData = File.ReadAllLines(path);
             List<Line> lines = new List<Line>();
             foreach(var it in inputData)
             {
