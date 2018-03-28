@@ -10,19 +10,19 @@ namespace Task3_2_
 {
     class Program
     {
-        static void Main(string[] args)
+        private static List<Line> lines = new List<Line>();
+        private static void Task1()
         {
             string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"data.txt");
             string[] inputData = File.ReadAllLines(path);
-            List<Line> lines = new List<Line>();
-            foreach(var it in inputData)
+            foreach (var it in inputData)
             {
                 List<double> data = new List<double>();
 
                 string numb = "";
                 for (int i = 0; i < it.Length; i++)
                 {
-                    if(it[i] == '-' && numb != "")
+                    if (it[i] == '-' && numb != "")
                     {
                         if (numb.Length != 0 && data.Count < 3)
                         {
@@ -30,13 +30,13 @@ namespace Task3_2_
                         }
                         numb = "";
                     }
-                    if(it[i] >= '0' && it[i] <= '9' || it[i] == ',' || it[i] == '-')
+                    if (it[i] >= '0' && it[i] <= '9' || it[i] == ',' || it[i] == '-')
                     {
                         numb += it[i];
                     }
                     else
                     {
-                        if(numb.Length != 0 && data.Count < 3)
+                        if (numb.Length != 0 && data.Count < 3)
                         {
                             data.Add(Double.Parse(numb));
                         }
@@ -50,12 +50,12 @@ namespace Task3_2_
                 lines.Add(tmp);
             }
 
-            List<string> ans = new List<string>(); 
-            foreach(var it in lines)
+            List<string> ans = new List<string>();
+            foreach (var it in lines)
             {
-                foreach(var it2 in lines)
+                foreach (var it2 in lines)
                 {
-                    if(it.IsIntersection(it2))
+                    if (it.IsIntersection(it2))
                     {
                         string line = "Line " + it.A.ToString() + "x+" + it.B.ToString() + "y+" + it.C.ToString() + "=0";
                         line += " with line " + it2.A.ToString() + "x+" + it2.B.ToString() + "y+" + it2.C.ToString() + "=0";
@@ -68,7 +68,45 @@ namespace Task3_2_
             path = "";
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"data1.txt");
             File.WriteAllLines(path, ans);
-            Console.ReadKey();
+        }
+
+        private static void Task2()
+        {
+            Line line = new Line(0, 1, 0);
+            List<string> ans = new List<string>();
+            foreach (var it in lines)
+            {
+                if (!it.Parallel(line))
+                {
+                    string str = "Line " + it.A.ToString() + "x+" + it.B.ToString() + "y+" + it.C.ToString() + "=0";
+                    str += " with line " + line.A.ToString() + "x+" + line.B.ToString() + "y+" + line.C.ToString() + "=0";
+                    str += " is parallel";
+                    ans.Add(str);
+                }
+            }
+            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"data2.txt");
+            File.WriteAllLines(path, ans);
+            ans.Clear();
+
+            foreach (var it in lines)
+            {
+                if (it.Angle(line) == 0)
+                {
+                    string str = "Line " + it.A.ToString() + "x+" + it.B.ToString() + "y+" + it.C.ToString() + "=0";
+                    str += " with line " + line.A.ToString() + "x+" + line.B.ToString() + "y+" + line.C.ToString() + "=0";
+                    str += " intersect at right angles";
+                    ans.Add(str);
+                }
+            }
+            path = "";
+            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"data3.txt");
+            File.WriteAllLines(path, ans);
+        }
+
+        static void Main(string[] args)
+        {
+            Task1();
+            Task2();
         }
     }
 }
