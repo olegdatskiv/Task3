@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 public class Line
 {
-    public double a { get; set; }
-    public double b { get; set; }
-    public double c { get; set; }
+    private double a;
+    private double b;
+    private double c;
+
+    public double A { get { return a; } set { a = value; } }
+    public double B { get { return b; } set { b = value; } }
+    public double C { get { return c; } set { c = value; } }
+
 
     private const double EPS = 1e-9;
 
