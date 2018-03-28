@@ -52,6 +52,18 @@ public class Line
         && Math.Abs(Det(this.b, this.c, item.b, item.c)) < EPS;
     }
 
+    public bool IsIntersection(Line lineObject)
+    {
+        double zn = Det(this.a, this.b, lineObject.a, lineObject.b);
+
+        if (Math.Abs(zn) < EPS)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     public Tuple<double,double> Intersection(Line lineObject)
     {
         double zn = Det(this.a, this.b, lineObject.a, lineObject.b);

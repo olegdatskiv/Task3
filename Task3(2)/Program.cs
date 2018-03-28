@@ -22,6 +22,14 @@ namespace Task3_2_
                 string numb = "";
                 for (int i = 0; i < it.Length; i++)
                 {
+                    if(it[i] == '-' && numb != "")
+                    {
+                        if (numb.Length != 0 && data.Count < 3)
+                        {
+                            data.Add(Double.Parse(numb));
+                        }
+                        numb = "";
+                    }
                     if(it[i] >= '0' && it[i] <= '9' || it[i] == ',' || it[i] == '-')
                     {
                         numb += it[i];
@@ -42,10 +50,24 @@ namespace Task3_2_
                 lines.Add(tmp);
             }
 
+            List<string> ans = new List<string>(); 
             foreach(var it in lines)
             {
-                Console.WriteLine("{0} {1} {2}", it.A, it.B, it.C);
+                foreach(var it2 in lines)
+                {
+                    if(it.IsIntersection(it2))
+                    {
+                        string line = "Line " + it.A.ToString() + "x+" + it.B.ToString() + "y+" + it.C.ToString() + "=0";
+                        line += " with line " + it2.A.ToString() + "x+" + it2.B.ToString() + "y+" + it2.C.ToString() + "=0";
+                        var point = it.Intersection(it2);
+                        line += " have such a point of intersection (x,y) = " + '(' + point.Item1.ToString() + ',' + point.Item2.ToString() + ')';
+                        ans.Add(line);
+                    }
+                }
             }
+            path = "";
+            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"data1.txt");
+            File.WriteAllLines(path, ans);
             Console.ReadKey();
         }
     }
