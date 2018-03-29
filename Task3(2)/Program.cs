@@ -11,10 +11,8 @@ namespace Task3_2_
     class Program
     {
         private static List<Line> lines = new List<Line>();
-        private static void Task1()
+        private static void Input(string[] inputData)
         {
-            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"data.txt");
-            string[] inputData = File.ReadAllLines(path);
             foreach (var item in inputData)
             {
                 List<double> coefficients = new List<double>();
@@ -49,7 +47,13 @@ namespace Task3_2_
                 additionalLine.C = coefficients[2];
                 lines.Add(additionalLine);
             }
+        }
+        private static void Task1()
+        {
+            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"data.txt");
+            string[] inputData = File.ReadAllLines(path);
 
+            Input(inputData);
             List<string> task1Answers = new List<string>();
             foreach (var line1 in lines)
             {
