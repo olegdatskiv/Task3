@@ -47,16 +47,16 @@ public class Line
             return false;
         }
 
-        return Math.Abs(Det(this.a, this.b, item.a, item.b)) < EPS
-        && Math.Abs(Det(this.a, this.c, item.a, item.c)) < EPS
-        && Math.Abs(Det(this.b, this.c, item.b, item.c)) < EPS;
+        return Math.Abs(Determinant(this.a, this.b, item.a, item.b)) < EPS
+        && Math.Abs(Determinant(this.a, this.c, item.a, item.c)) < EPS
+        && Math.Abs(Determinant(this.b, this.c, item.b, item.c)) < EPS;
     }
 
-    public bool IsIntersection(Line lineObject)
+    public bool AreIntersected(Line lineObject)
     {
-        double zn = Det(this.a, this.b, lineObject.a, lineObject.b);
+        double denominator = Determinant(this.a, this.b, lineObject.a, lineObject.b);
 
-        if (Math.Abs(zn) < EPS)
+        if (Math.Abs(denominator) < EPS)
         {
             return false;
         }
@@ -64,22 +64,22 @@ public class Line
         return true;
     }
 
-    public Tuple<double,double> Intersection(Line lineObject)
+    public Tuple<double,double> FindPointOfIntersection(Line lineObject)
     {
-        double zn = Det(this.a, this.b, lineObject.a, lineObject.b);
+        double denominator = Determinant(this.a, this.b, lineObject.a, lineObject.b);
 
-        if(Math.Abs(zn) < EPS)
+        if(Math.Abs(denominator) < EPS)
         {
             throw new ArgumentException("These straight lines do not overlap");
         }
 
-        double x = -Det(this.c, this.b, lineObject.c, lineObject.b) / zn;
-        double y = -Det(this.a, this.c, lineObject.a, lineObject.c) / zn;
+        double x = -Determinant(this.c, this.b, lineObject.c, lineObject.b) / denominator;
+        double y = -Determinant(this.a, this.c, lineObject.a, lineObject.c) / denominator;
 
         return Tuple.Create(x, y);
     }
 
-    private static double Det(double a, double b, double c, double d)
+    private static double Determinant(double a, double b, double c, double d)
     {
         return a * d - b * c;
     }
@@ -91,20 +91,21 @@ public class Line
             return true;
         }
         else
+
         {
             return false;
         }
     }
 
-    public bool Parallel(Line lineObject)
+    public bool AreParallel(Line lineObject)
     {
-        return Math.Abs(Det(this.a, this.b, lineObject.a, lineObject.b)) < EPS;
+        return Math.Abs(Determinant(this.a, this.b, lineObject.a, lineObject.b)) < EPS;
     }
 
-    public double Angle(Line lineObject)
+    public double FindAngleBetweenLines(Line lineObject)
     {
-        return Math.Cos((this.a * lineObject.a + this.b * lineObject.b) 
+        return (this.a * lineObject.a + this.b * lineObject.b) 
             / (Math.Sqrt(Math.Pow(this.a, 2) + Math.Pow(this.b, 2))
-            *  Math.Sqrt(Math.Pow(lineObject.a, 2) + Math.Pow(lineObject.b, 2))));
+            *  Math.Sqrt(Math.Pow(lineObject.a, 2) + Math.Pow(lineObject.b, 2)));
     }
 }

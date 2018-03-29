@@ -15,92 +15,92 @@ namespace Task3_2_
         {
             string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"data.txt");
             string[] inputData = File.ReadAllLines(path);
-            foreach (var it in inputData)
+            foreach (var item in inputData)
             {
-                List<double> data = new List<double>();
+                List<double> coefficients = new List<double>();
 
-                string numb = "";
-                for (int i = 0; i < it.Length; i++)
+                string number = "";
+                for (int i = 0; i < item.Length; i++)
                 {
-                    if (it[i] == '-' && numb != "")
+                    if (item[i] == '-' && number != "")
                     {
-                        if (numb.Length != 0 && data.Count < 3)
+                        if (number.Length != 0 && coefficients.Count < 3)
                         {
-                            data.Add(Double.Parse(numb));
+                            coefficients.Add(Double.Parse(number));
                         }
-                        numb = "";
+                        number = "";
                     }
-                    if (it[i] >= '0' && it[i] <= '9' || it[i] == ',' || it[i] == '-')
+                    if (item[i] >= '0' && item[i] <= '9' || item[i] == ',' || item[i] == '-')
                     {
-                        numb += it[i];
+                        number += item[i];
                     }
                     else
                     {
-                        if (numb.Length != 0 && data.Count < 3)
+                        if (number.Length != 0 && coefficients.Count < 3)
                         {
-                            data.Add(Double.Parse(numb));
+                            coefficients.Add(Double.Parse(number));
                         }
-                        numb = "";
+                        number = "";
                     }
                 }
-                Line tmp = new Line();
-                tmp.A = data[0];
-                tmp.B = data[1];
-                tmp.C = data[2];
-                lines.Add(tmp);
+                Line additionalLine = new Line();
+                additionalLine.A = coefficients[0];
+                additionalLine.B = coefficients[1];
+                additionalLine.C = coefficients[2];
+                lines.Add(additionalLine);
             }
 
-            List<string> ans = new List<string>();
-            foreach (var it in lines)
+            List<string> task1Answers = new List<string>();
+            foreach (var line1 in lines)
             {
-                foreach (var it2 in lines)
+                foreach (var line2 in lines)
                 {
-                    if (it.IsIntersection(it2))
+                    if (line1.AreIntersected(line2))
                     {
-                        string line = "Line " + it.A.ToString() + "x+" + it.B.ToString() + "y+" + it.C.ToString() + "=0";
-                        line += " with line " + it2.A.ToString() + "x+" + it2.B.ToString() + "y+" + it2.C.ToString() + "=0";
-                        var point = it.Intersection(it2);
-                        line += " have such a point of intersection (x,y) = " + '(' + point.Item1.ToString() + ',' + point.Item2.ToString() + ')';
-                        ans.Add(line);
+                        string answer = "Line " + line1.A.ToString() + "x+" + line1.B.ToString() + "y+" + line1.C.ToString() + "=0";
+                        answer += " with line " + line2.A.ToString() + "x+" + line2.B.ToString() + "y+" + line2.C.ToString() + "=0";
+                        var point = line1.FindPointOfIntersection(line2);
+                        answer += " have such a point of intersection (x,y) = " + '(' + point.Item1.ToString() + ';' + point.Item2.ToString() + ')';
+                        task1Answers.Add(answer);
                     }
                 }
             }
             path = "";
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"data1.txt");
-            File.WriteAllLines(path, ans);
+            File.WriteAllLines(path, task1Answers);
         }
 
         private static void Task2()
         {
-            Line line = new Line(0, 1, 0);
-            List<string> ans = new List<string>();
-            foreach (var it in lines)
+            Line lineOX = new Line(0, 1, 0);
+            List<string> task2Answers = new List<string>();
+            foreach (var line in lines)
             {
-                if (!it.Parallel(line))
+                if (line.AreParallel(lineOX))
                 {
-                    string str = "Line " + it.A.ToString() + "x+" + it.B.ToString() + "y+" + it.C.ToString() + "=0";
-                    str += " with line " + line.A.ToString() + "x+" + line.B.ToString() + "y+" + line.C.ToString() + "=0";
-                    str += " is parallel";
-                    ans.Add(str);
+                    string answer = "Line " + line.A.ToString() + "x+" + line.B.ToString() + "y+" + line.C.ToString() + "=0";
+                    answer += " with line " + lineOX.A.ToString() + "x+" + lineOX.B.ToString() + "y+" + lineOX.C.ToString() + "=0";
+                    answer += " is parallel";
+                    task2Answers.Add(answer);
                 }
             }
             string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"data2.txt");
-            File.WriteAllLines(path, ans);
-            ans.Clear();
+            File.WriteAllLines(path, task2Answers);
+            task2Answers.Clear();
 
-            foreach (var it in lines)
+            foreach (var line in lines)
             {
-                if (it.Angle(line) == 0)
+                if (line.FindAngleBetweenLines(lineOX) == 0)
                 {
-                    string str = "Line " + it.A.ToString() + "x+" + it.B.ToString() + "y+" + it.C.ToString() + "=0";
-                    str += " with line " + line.A.ToString() + "x+" + line.B.ToString() + "y+" + line.C.ToString() + "=0";
-                    str += " intersect at right angles";
-                    ans.Add(str);
+                    string answer = "Line " + line.A.ToString() + "x+" + line.B.ToString() + "y+" + line.C.ToString() + "=0";
+                    answer += " with line " + lineOX.A.ToString() + "x+" + lineOX.B.ToString() + "y+" + lineOX.C.ToString() + "=0";
+                    answer += " intersect at right angles";
+                    task2Answers.Add(answer);
                 }
             }
             path = "";
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"data3.txt");
-            File.WriteAllLines(path, ans);
+            File.WriteAllLines(path, task2Answers);
         }
 
         static void Main(string[] args)

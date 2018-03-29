@@ -1,0 +1,2 @@
+Line 1x+0y+0=0 with line 0x+1y+0=0 intersect at right angles
+Line 5x+0y+5=0 with line 0x+1y+0=0 intersect at right angles

@@ -1,0 +1,6 @@
+line1, x, y, result
+2 3 5, -1, -1, true
+-2 0 4, 2, 5, true
+1.5 3 0, 2, -1, true
+2 3 -4, 0, 2, false
+-1 5 3, 1, 7, false
