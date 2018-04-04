@@ -82,16 +82,19 @@ namespace Task3_2_UnitTest
             string data2 = TestContext.DataRow["line2"].ToString();
             string[] coefficients1 = data1.Split(' ');
             string[] coefficients2 = data2.Split(' ');
-            Line firstLine = new Line(double.Parse(coefficients1[0], InvariantCulture), double.Parse(coefficients1[1], InvariantCulture), 
+            Line firstLine = new Line(double.Parse(coefficients1[0], InvariantCulture), double.Parse(coefficients1[1], InvariantCulture),
                                         double.Parse(coefficients1[2], InvariantCulture));
             Line secondLine = new Line(double.Parse(coefficients2[0], InvariantCulture), double.Parse(coefficients2[1], InvariantCulture),
                                         double.Parse(coefficients2[2], InvariantCulture));
-            double xCoordinate = Convert.ToDouble(TestContext.DataRow["x"].ToString());
-            double yCoordinate = Convert.ToDouble(TestContext.DataRow["y"].ToString());
-            Tuple<double, double> expectedResult = Tuple.Create(xCoordinate, yCoordinate);
+
+            Point expectedResult = new Point
+            {
+                X = Convert.ToDouble(TestContext.DataRow["x"].ToString()),
+                Y = Convert.ToDouble(TestContext.DataRow["y"].ToString())
+            };
 
             //Act
-            Tuple<double, double> result = firstLine.FindPointOfIntersection(secondLine);
+            Point result = firstLine.FindPointOfIntersection(secondLine);
 
             //Assert
             Assert.AreEqual(expectedResult, result);
@@ -111,13 +114,16 @@ namespace Task3_2_UnitTest
             string[] coefficients = data.Split(' ');
             Line line = new Line(double.Parse(coefficients[0], InvariantCulture), double.Parse(coefficients[1], InvariantCulture),
                                         double.Parse(coefficients[2], InvariantCulture));
-            double xCoordinate = Convert.ToDouble(TestContext.DataRow["x"].ToString());
-            double yCoordinate = Convert.ToDouble(TestContext.DataRow["y"].ToString());
-            Tuple<double, double> point = Tuple.Create(xCoordinate, yCoordinate);
+    
+            Point pointToCheck = new Point
+            {
+                X = Convert.ToDouble(TestContext.DataRow["x"].ToString()),
+                Y = Convert.ToDouble(TestContext.DataRow["y"].ToString())
+            };
             bool expectedResult = bool.Parse(TestContext.DataRow["result"].ToString());
 
             //Act
-            bool result = line.IsPointOnLine(point);
+            bool result = line.IsPointOnLine(pointToCheck);
 
             //Assert
             Assert.AreEqual(expectedResult, result);

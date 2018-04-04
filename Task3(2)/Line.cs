@@ -4,38 +4,53 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+public struct Point
+{
+    public double X { get; set; }
+    public double Y { get; set; }
+}
+
 public class Line
 {
-    private double a;
-    private double b;
-    private double c;
-
-    public double A { get { return a; } set { a = value; } }
-    public double B { get { return b; } set { b = value; } }
-    public double C { get { return c; } set { c = value; } }
-
+    public double A { get; set; }
+    public double B { get; set; }
+    public double C { get; set; }
 
     private const double EPS = 1e-9;
 
     public Line()
     {
-        a = 0;
-        b = 0;
-        c = 0;
+        A = 0;
+        B = 0;
+        C = 0;
+    }
+
+    public Line(double _a)
+    {
+        A = _a;
+        B = 0;
+        C = 0;
+    }
+
+    public Line(double _a, double _b)
+    {
+        A = _a;
+        B = _b;
+        C = 0;
     }
 
     public Line(double _a, double _b, double _c)
     {
-        a = _a;
-        b = _b;
-        c = _c;
+        A = _a;
+        B = _b;
+        C = _c;
     }
 
     public Line(Line previousLine)
     {
-        a = previousLine.a;
-        b = previousLine.b;
-        c = previousLine.c;
+        A = previousLine.A;
+        B = previousLine.B;
+        C = previousLine.C;
     }
 
     public override bool Equals(object obj)
@@ -47,14 +62,14 @@ public class Line
             return false;
         }
 
-        return Math.Abs(Determinant(this.a, this.b, item.a, item.b)) < EPS
-        && Math.Abs(Determinant(this.a, this.c, item.a, item.c)) < EPS
-        && Math.Abs(Determinant(this.b, this.c, item.b, item.c)) < EPS;
+        return Math.Abs(Determinant(this.A, this.B, item.A, item.B)) < EPS
+        && Math.Abs(Determinant(this.A, this.C, item.A, item.C)) < EPS
+        && Math.Abs(Determinant(this.B, this.C, item.B, item.C)) < EPS;
     }
 
     public bool AreIntersected(Line lineObject)
     {
-        double denominator = Determinant(this.a, this.b, lineObject.a, lineObject.b);
+        double denominator = Determinant(this.A, this.B, lineObject.A, lineObject.B);
 
         if (Math.Abs(denominator) < EPS)
         {
@@ -64,19 +79,21 @@ public class Line
         return true;
     }
 
-    public Tuple<double,double> FindPointOfIntersection(Line lineObject)
+    public Point FindPointOfIntersection(Line lineObject)
     {
-        double denominator = Determinant(this.a, this.b, lineObject.a, lineObject.b);
+        double denominator = Determinant(this.A, this.B, lineObject.A, lineObject.B);
 
         if(Math.Abs(denominator) < EPS)
         {
             throw new ArgumentException("These straight lines do not overlap");
         }
+        Point pointOfIntersection = new Point
+        {
+            X = -Determinant(this.C, this.B, lineObject.C, lineObject.B) / denominator,
+            Y = -Determinant(this.A, this.C, lineObject.A, lineObject.C) / denominator
+        };
 
-        double x = -Determinant(this.c, this.b, lineObject.c, lineObject.b) / denominator;
-        double y = -Determinant(this.a, this.c, lineObject.a, lineObject.c) / denominator;
-
-        return Tuple.Create(x, y);
+        return pointOfIntersection;
     }
 
     private static double Determinant(double a, double b, double c, double d)
@@ -84,28 +101,21 @@ public class Line
         return a * d - b * c;
     }
 
-    public bool IsPointOnLine(Tuple<double,double> point)
+    public bool IsPointOnLine(Point pointToCheck)
     {
-        if(this.a*point.Item1 + this.b*point.Item2 + this.c == 0)
-        {
-            return true;
-        }
-        else
-
-        {
-            return false;
-        }
+       return (this.A * pointToCheck.X + this.B * pointToCheck.Y + this.C == 0);
     }
 
     public bool AreParallel(Line lineObject)
     {
-        return Math.Abs(Determinant(this.a, this.b, lineObject.a, lineObject.b)) < EPS;
+        return Math.Abs(Determinant(this.A, this.B, lineObject.A, lineObject.B)) < EPS;
     }
 
     public double FindAngleBetweenLines(Line lineObject)
     {
-        return (this.a * lineObject.a + this.b * lineObject.b) 
-            / (Math.Sqrt(Math.Pow(this.a, 2) + Math.Pow(this.b, 2))
-            *  Math.Sqrt(Math.Pow(lineObject.a, 2) + Math.Pow(lineObject.b, 2)));
+        var angle = (this.A * lineObject.A + this.B * lineObject.B) /
+             (Math.Sqrt(Math.Pow(this.A, 2) + Math.Pow(this.B, 2))
+            * Math.Sqrt(Math.Pow(lineObject.A, 2) + Math.Pow(lineObject.B, 2)));
+        return angle;
     }
 }

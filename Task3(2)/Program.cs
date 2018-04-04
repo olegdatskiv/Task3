@@ -10,6 +10,7 @@ namespace Task3_2_
 {
     class Program
     {
+        private const uint COEFFICIENTSAMOUNT = 3;
         private static List<Line> lines = new List<Line>();
         private static void Input(string[] inputData)
         {
@@ -22,7 +23,7 @@ namespace Task3_2_
                 {
                     if (item[i] == '-' && number != "")
                     {
-                        if (number.Length != 0 && coefficients.Count < 3)
+                        if (number.Length != 0 && coefficients.Count < COEFFICIENTSAMOUNT)
                         {
                             coefficients.Add(Double.Parse(number));
                         }
@@ -61,10 +62,10 @@ namespace Task3_2_
                 {
                     if (line1.AreIntersected(line2))
                     {
-                        string answer = "Line " + line1.A.ToString() + "x+" + line1.B.ToString() + "y+" + line1.C.ToString() + "=0";
-                        answer += " with line " + line2.A.ToString() + "x+" + line2.B.ToString() + "y+" + line2.C.ToString() + "=0";
                         var point = line1.FindPointOfIntersection(line2);
-                        answer += " have such a point of intersection (x,y) = " + '(' + point.Item1.ToString() + ';' + point.Item2.ToString() + ')';
+                        string answer = $"Line {line1.A.ToString()}x + {line1.B.ToString()}y + {line1.C.ToString()}=0 " +
+                                  $"with line {line2.A.ToString()}x+ {line2.B.ToString()}y+ {line2.C.ToString()}=0" +
+                                  $" have such a point of intersection (x,y) = ({point.X.ToString()},{point.Y.ToString()})";
                         task1Answers.Add(answer);
                     }
                 }
@@ -82,9 +83,9 @@ namespace Task3_2_
             {
                 if (line.AreParallel(lineOX))
                 {
-                    string answer = "Line " + line.A.ToString() + "x+" + line.B.ToString() + "y+" + line.C.ToString() + "=0";
-                    answer += " with line " + lineOX.A.ToString() + "x+" + lineOX.B.ToString() + "y+" + lineOX.C.ToString() + "=0";
-                    answer += " is parallel";
+                    string answer = $"Line {line.A.ToString()}x + {line.B.ToString()}y + {line.C.ToString()}=0 " +
+                                  $"with line {lineOX.A.ToString()}x+ {lineOX.B.ToString()}y+ {lineOX.C.ToString()}=0" +
+                                  " is parallel";
                     task2Answers.Add(answer);
                 }
             }
@@ -96,9 +97,9 @@ namespace Task3_2_
             {
                 if (line.FindAngleBetweenLines(lineOX) == 0)
                 {
-                    string answer = "Line " + line.A.ToString() + "x+" + line.B.ToString() + "y+" + line.C.ToString() + "=0";
-                    answer += " with line " + lineOX.A.ToString() + "x+" + lineOX.B.ToString() + "y+" + lineOX.C.ToString() + "=0";
-                    answer += " intersect at right angles";
+                    string answer = $"Line {line.A.ToString()}x + {line.B.ToString()}y + {line.C.ToString()}=0 " +
+                                  $"with line {lineOX.A.ToString()}x+ {lineOX.B.ToString()}y+ {lineOX.C.ToString()}=0" +
+                                  "intersect at right angles";
                     task2Answers.Add(answer);
                 }
             }

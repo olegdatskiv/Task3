@@ -1,1 +1,1 @@
-Line 0x+2y+-5,2=0 with line 0x+1y+0=0 is parallel
+Line 0x + 2y + -5,2=0 with line 0x+ 1y+ 0=0 is parallel
